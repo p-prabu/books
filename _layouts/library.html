@@ -1,0 +1,43 @@
+---
+layout: default
+---
+
+{% include topbar.html %}
+
+<main class="library" aria-label="Bookshelves">
+  {% assign cats = site.data.categories %}
+  {% assign cols = 5 %}
+  {% for c in cats %}
+    {% assign i = forloop.index0 %}
+    {% assign open_row = i | modulo: cols %}
+    {% if open_row == 0 %}
+      <section class="shelf-row">
+        <div class="shelf-title">Shelf {{ i | divided_by: cols | plus: 1 }}</div>
+        <div class="notes">
+    {% endif %}
+
+    <a class="note {% if i % 4 == 1 %}note--mint{% elsif i % 4 == 2 %}note--sky{% elsif i % 4 == 3 %}note--rose{% endif %}" href="{{ '/book/' | append: c.id | append: '/' | relative_url }}" style="--tilt: {{ -0.6 | plus: i | modulo: 3 | times: 0.6 }}deg">
+      <div class="pin" aria-hidden="true"></div>
+      <div class="dogear" aria-hidden="true"></div>
+      <h3>{{ c.label }}</h3>
+      <ul>
+        {% assign posts = site.categories[c.id] | sort: 'date' | reverse %}
+        {% if posts and posts.size > 0 %}
+          {% for p in posts limit:3 %}
+            <li>{{ p.title }}</li>
+          {% endfor %}
+        {% else %}
+            <li>Sample Page 1</li>
+            <li>Sample Page 2</li>
+            <li>Sample Page 3</li>
+        {% endif %}
+      </ul>
+    </a>
+
+    {% assign close_row = i | modulo: cols %}
+    {% if close_row == cols - 1 or forloop.last %}
+        </div>
+      </section>
+    {% endif %}
+  {% endfor %}
+</main>

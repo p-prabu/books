@@ -1,0 +1,55 @@
+---
+layout: default
+---
+
+{% include topbar.html %}
+
+<div class="wrap">
+  <div class="book">
+    <div class="spread" role="document">
+      <div class="hinge" aria-hidden="true"></div>
+
+      <section class="page left" aria-label="Table of contents">
+        <div class="ribbon" title="Bookmarked"></div>
+        <div class="chapter">{{ page.label }}</div>
+        <h1>{{ page.label }}</h1>
+        <p class="subtitle">Three sample pages in {{ page.label }}.</p>
+        <div class="toc" id="toc"></div>
+        <div class="folio">i</div>
+      </section>
+
+      <article class="page right dropcap" id="article">
+        <div class="chapter" id="chapterLabel">{{ page.label }}</div>
+        <h1 id="title">Title</h1>
+        <p class="subtitle" id="subtitle">Subtitle</p>
+        <div class="tabs" id="tabs"></div>
+        <div id="content"></div>
+
+        <div class="controls">
+          <button class="pill" id="prev">◀ Prev</button>
+          <button class="pill" id="next">Next ▶</button>
+        </div>
+        <div class="folio" id="folio">1</div>
+      </article>
+    </div>
+  </div>
+</div>
+
+<script>
+  window.BOOK_DATA = {
+    category: {{ page.category | jsonify }},
+    label: {{ page.label | jsonify }},
+    pages: [
+      {%- assign posts = site.categories[page.category] | sort: 'date' | reverse -%}
+      {%- for post in posts -%}
+        {
+          "t": {{ post.title | jsonify }},
+          "s": {{ post.subtitle | default: post.excerpt | strip_html | strip | truncate: 160 | jsonify }},
+          "h": {{ post.content | jsonify }},
+          "url": {{ post.url | relative_url | jsonify }}
+        }{%- if forloop.last == false -%},{%- endif -%}
+      {%- endfor -%}
+    ]
+  };
+</script>
+<script src="{{ '/assets/js/book.js' | relative_url }}"></script>

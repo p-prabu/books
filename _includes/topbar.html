@@ -1,0 +1,32 @@
+<div class="bar">
+  {% if page.layout == "book" %}
+  <div class="left">
+    <a class="btn" href="{{ '/' | relative_url }}">← Back to Shelf</a>
+  </div>
+  {% endif %}
+  <button class="btn" id="mode">Theme: Paper</button>
+  <button class="btn" id="smaller">A−</button>
+  <button class="btn" id="bigger">A+</button>
+  <span style="opacity:.7">{% if page.layout == "book" %}Use tabs to switch pages. Esc to return.{% else %}Pick a note from the shelf. Each category opens as its own book.{% endif %}</span>
+</div>
+
+<script>
+  // Theme + font controls (shared)
+  const modeBtn = document.getElementById('mode');
+  const modes = ['paper','sepia','night'];
+  function cycleMode(){
+    const current = document.documentElement.getAttribute('data-theme')||'paper';
+    const i = modes.indexOf(current); const next = modes[(i+1)%modes.length];
+    document.documentElement.setAttribute('data-theme', next==='paper' ? '' : next);
+    localStorage.setItem('book-theme', next);
+    modeBtn.textContent = 'Theme: ' + (next==='paper'?'Paper':next.charAt(0).toUpperCase()+next.slice(1));
+  }
+  modeBtn.addEventListener('click', cycleMode);
+  const savedTheme = localStorage.getItem('book-theme'); if(savedTheme){ document.documentElement.setAttribute('data-theme', savedTheme==='paper'?'':savedTheme); modeBtn.textContent = 'Theme: ' + (savedTheme==='paper'?'Paper':savedTheme.charAt(0).toUpperCase()+savedTheme.slice(1)); }
+
+  const smaller = document.getElementById('smaller'); const bigger = document.getElementById('bigger');
+  const clamp = (n,min,max)=>Math.max(min,Math.min(max,n));
+  function setSize(delta){ const cur = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--base'))||18; const next = clamp(cur + delta, 16, 22); document.documentElement.style.setProperty('--base', next + 'px'); localStorage.setItem('book-font', next); }
+  smaller.addEventListener('click', ()=>setSize(-1)); bigger.addEventListener('click', ()=>setSize(1));
+  const savedSize = localStorage.getItem('book-font'); if(savedSize){ document.documentElement.style.setProperty('--base', savedSize+'px'); }
+</script>
