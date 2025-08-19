@@ -85,3 +85,7 @@ ul{ margin:8px 0 14px 20px; }
   .hinge{ display:none; }
   .wrap{ padding-bottom:110px; }
 }
+
+@media (max-width: 600px){
+  .notes{ grid-template-columns: 1fr; }
+}
