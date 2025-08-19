@@ -1,7 +1,7 @@
-title: Book‑Style Weekly Newsletter
+title: Book-Style Weekly Newsletter
 description: A clean, book-like GitHub Pages newsletter site with categories and Markdown posts.
-baseurl: "" # the subpath of your site, e.g. /blog
-url: ""     # the base hostname & protocol for your site, e.g. https://username.github.io
+url: "https://p-prabu.github.io"   # user/org root
+baseurl: "/books"                  # project repo name
 permalink: /:categories/:title/
 markdown: kramdown
 kramdown:
@@ -14,8 +14,6 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - node_modules
-  - package.json
-  - package-lock.json
 sass:
   style: compressed
 timezone: Europe/Stockholm
