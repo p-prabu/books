@@ -1,20 +1,20 @@
-#- id: technology
-#  label: Technology
-#- id: personal-growth
-#  label: Personal Growth
-#- id: health
-#  label: Health & Wellness
-#- id: finance
-#  label: Finance & Investing
-#- id: career
-#  label: Career & Work
+- id: technology
+  label: Technology
+- id: personal-growth
+  label: Personal Growth
+- id: health
+  label: Health & Wellness
+- id: finance
+  label: Finance & Investing
+- id: career
+  label: Career & Work
 - id: books
   label: Books & Learning
-# - id: travel
-#  label: Travel & Lifestyle
-#- id: food
-#  label: Food & Recipes
-#- id: science
-#  label: Science & Innovation
-#- id: reflections
-#  label: Weekly Reflections
+- id: travel
+  label: Travel & Lifestyle
+- id: food
+  label: Food & Recipes
+- id: science
+  label: Science & Innovation
+- id: reflections
+  label: Weekly Reflections
