@@ -21,7 +21,8 @@ layout: default
       <div class="dogear" aria-hidden="true"></div>
       <h3>{{ c.label }}</h3>
       <ul>
-        {% assign posts = site.categories[c.id] | sort: 'date' | reverse %}
+        {% assign posts = site.categories[c.id] | default: [] %}
+        {% assign posts = posts | sort: "date" | reverse %}
         {% if posts and posts.size > 0 %}
           {% for p in posts limit:3 %}
             <li>{{ p.title }}</li>
