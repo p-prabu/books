@@ -10,8 +10,6 @@
 #  label: Career & Work
 - id: books
   label: Books & Learning
-- id: story
-  label: Story
 # - id: travel
 #  label: Travel & Lifestyle
 #- id: food
