@@ -15,8 +15,8 @@ layout: default
         <div class="shelf-title">Shelf {{ i | divided_by: cols | plus: 1 }}</div>
         <div class="notes">
     {% endif %}
-
-    <a class="note {% if i % 4 == 1 %}note--mint{% elsif i % 4 == 2 %}note--sky{% elsif i % 4 == 3 %}note--rose{% endif %}" href="{{ '/book/' | append: c.id | append: '/' | relative_url }}" style="--tilt: {{ -0.6 | plus: i | modulo: 3 | times: 0.6 }}deg">
+    {% assign color = i | modulo: 4 %}
+    <a class="note {% if color == 1 %}note--mint{% elsif color == 2 %}note--sky{% elsif color == 3 %}note--rose{% endif %}" href="{{ '/book/' | append: c.id | append: '/' | relative_url }}" style="--tilt: {{ -0.6 | plus: i | modulo: 3 | times: 0.6 }}deg">
       <div class="pin" aria-hidden="true"></div>
       <div class="dogear" aria-hidden="true"></div>
       <h3>{{ c.label }}</h3>
@@ -35,7 +35,8 @@ layout: default
     </a>
 
     {% assign close_row = i | modulo: cols %}
-    {% if close_row == cols - 1 or forloop.last %}
+    {% assign last_col = cols | minus: 1 %}
+    {% if close_row == last_col or forloop.last %}
         </div>
       </section>
     {% endif %}
