@@ -1,5 +1,5 @@
 ---
-title: "மனதை வென்றால் வெற்றி
+title: "மனதை வென்றால் வெற்றி"
 date: 2025-08-21
 layout: post
 categories: books
