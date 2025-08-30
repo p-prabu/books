@@ -2,7 +2,7 @@
 title: "எங்கு சென்றாலும் சத்தம்; உள்ளில் அமைதி"
 date: 2025-08-30
 layout: post
-categories: stories
+categories: books
 lang: ta
 tags: [தியானம், புத்தம், மனஅமைதி, கவனம், கதை]
 subtitle: "நோக்கத்தில் முழு கவனம் — சத்தத்தை மீறும் அமைதி."
