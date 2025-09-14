@@ -20,7 +20,10 @@ layout: default
 
   {% assign cat = page.categories | first | default: page.categories %}
   {% if cat %}
-    {% assign rel = site.categories[cat] | default: [] %}
+    {% assign rel = site.categories[cat] %}
+    {% unless rel %}
+      {% assign rel = "" | split: "" %}
+    {% endunless %}
     {% assign rel = rel | sort: 'date' | reverse %}
     <div class="related">
       <h3>Related in {{ cat | capitalize }}</h3>

@@ -32,9 +32,12 @@ layout: default
       <div class="dogear" aria-hidden="true"></div>
       <h3>{{ c.label }}</h3>
       <ul>
-        {% assign posts = site.categories[c.id] | default: [] %}
+        {% assign posts = site.categories[c.id] %}
+        {% unless posts %}
+          {% assign posts = "" | split: "" %}
+        {% endunless %}
         {% assign posts = posts | sort: "date" | reverse %}
-        {% if posts and posts.size > 0 %}
+        {% if posts.size > 0 %}
           {% for p in posts limit:3 %}
             <li>{{ p.title }}</li>
           {% endfor %}

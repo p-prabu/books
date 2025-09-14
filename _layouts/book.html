@@ -40,12 +40,11 @@ layout: default
     category: {{ page.category | jsonify }},
     label: {{ page.label | jsonify }},
     pages: [
-      {%- assign posts = site.categories[page.category] | default: "" -%}
-      {%- if posts != "" -%}
-        {%- assign posts = posts | sort: "date" | reverse -%}
-      {%- else -%}
-        {%- assign posts = [] -%}
-      {%- endif -%}
+      {%- assign posts = site.categories[page.category] -%}
+      {%- unless posts -%}
+        {%- assign posts = "" | split: "" -%}
+      {%- endunless -%}
+      {%- assign posts = posts | sort: "date" | reverse -%}
       {%- for post in posts -%}
         {
           "t": {{ post.title | jsonify }},
