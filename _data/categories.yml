@@ -28,3 +28,6 @@
 - id: reflections
   label: Weekly Reflections
   blurb: A weekly snapshot of what mattered.
+- id: spirituality
+  label: Spirituality
+  blurb: Mindfulness, meaning, and inner clarity.
