@@ -25,7 +25,7 @@ home_style: cover  # 'cover' for diary covers, 'notes' for sticky-notes
 author:
   name: "Prabu Ponnan"
   bio: "Sharing weekly notes, experiments, and reflections."
-  avatar: "/assets/avatar.jpg"  # optional; add an image at this path to show a photo
+  avatar: "/assets/avatar.svg"  # optional; add an image at this path to show a photo
   email: ""
   socials:
     twitter: ""
