@@ -37,6 +37,9 @@ permalink: /about/
           {% if site.author.socials.blog %}
           <li><a href="{{ site.author.socials.blog }}" target="_blank" rel="noopener">Tech Blog</a></li>
           {% endif %}
+          {% if site.author.socials.linkedin %}
+          <li><a href="{{ site.author.socials.linkedin }}" target="_blank" rel="noopener">LinkedIn</a></li>
+          {% endif %}
           {% if site.author.socials.github %}
           <li><a href="https://github.com/{{ site.author.socials.github }}" target="_blank" rel="noopener">GitHub</a></li>
           {% endif %}
