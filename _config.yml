@@ -1,7 +1,7 @@
 title: Book-Style Weekly Newsletter
 description: A clean, book-like GitHub Pages newsletter site with categories and Markdown posts.
-url: "https://p-prabu.github.io"   # user/org root
-baseurl: "/books"                  # project repo name
+url: "https://books.prabuponnan.in"   # custom domain
+baseurl: ""                           # served at domain root
 permalink: /:categories/:title/
 markdown: kramdown
 kramdown:
