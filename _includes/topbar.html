@@ -1,32 +1,122 @@
 <div class="bar">
-  {% if page.layout == "book" %}
   <div class="left">
-    <a class="btn" href="{{ '/' | relative_url }}">← Back to Shelf</a>
+    {% if page.layout == "book" %}
+      <a class="btn" href="{{ '/' | relative_url }}">← Back to Shelf</a>
+    {% elsif page.layout != "library" %}
+      <a class="btn" href="{{ '/' | relative_url }}">Home</a>
+    {% endif %}
   </div>
-  {% endif %}
-  <button class="btn" id="mode">Theme: Paper</button>
-  <button class="btn" id="smaller">A−</button>
-  <button class="btn" id="bigger">A+</button>
-  <span style="opacity:.7">{% if page.layout == "book" %}Use tabs to switch pages. Esc to return.{% else %}Pick a note from the shelf. Each category opens as its own book.{% endif %}</span>
+  <div class="settings-group">
+    <button class="btn" id="settings-btn" aria-haspopup="true" aria-expanded="false">Settings</button>
+    <div class="settings" id="settings" hidden>
+      <div class="settings__section">
+        <div class="settings__title">Theme</div>
+        <label><input type="radio" name="theme" value="paper"> Paper</label>
+        <label><input type="radio" name="theme" value="sepia"> Sepia</label>
+        <label><input type="radio" name="theme" value="night"> Night</label>
+      </div>
+      <div class="settings__section" id="layout-section">
+        <div class="settings__title">Layout</div>
+        <label><input type="radio" name="layout" value="notes"> Notes</label>
+        <label><input type="radio" name="layout" value="cover"> Diary</label>
+      </div>
+      <div class="settings__section">
+        <div class="settings__title">Text Size</div>
+        <input type="range" id="font-range" min="16" max="22" step="1">
+        <span class="settings__value" id="font-value"></span>
+      </div>
+      <div class="settings__actions">
+        <button class="btn" id="reset-settings">Reset</button>
+        <button class="btn" id="close-settings">Close</button>
+      </div>
+    </div>
+  </div>
+  <span class="hint">{% if page.layout == "book" %}Use tabs to switch pages. Esc to return.{% else %}Pick a note from the shelf. Each category opens as its own book.{% endif %}</span>
+  <div class="right">
+    <a class="profile" href="{{ '/about/' | relative_url }}" title="About">
+      <div class="avatar" aria-hidden="true">
+        {% if site.author.avatar %}
+          <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name }}" onerror="this.style.display='none'">
+        {% endif %}
+        {% capture initials %}{% assign parts = site.author.name | default: 'Author' | split: ' ' %}{% for p in parts %}{{ p | slice: 0,1 }}{% endfor %}{% endcapture %}
+        <span class="initials">{{ initials }}</span>
+      </div>
+      <span class="name">{{ site.author.name }}</span>
+    </a>
+  </div>
 </div>
 
 <script>
-  // Theme + font controls (shared)
-  const modeBtn = document.getElementById('mode');
-  const modes = ['paper','sepia','night'];
-  function cycleMode(){
-    const current = document.documentElement.getAttribute('data-theme')||'paper';
-    const i = modes.indexOf(current); const next = modes[(i+1)%modes.length];
-    document.documentElement.setAttribute('data-theme', next==='paper' ? '' : next);
-    localStorage.setItem('book-theme', next);
-    modeBtn.textContent = 'Theme: ' + (next==='paper'?'Paper':next.charAt(0).toUpperCase()+next.slice(1));
-  }
-  modeBtn.addEventListener('click', cycleMode);
-  const savedTheme = localStorage.getItem('book-theme'); if(savedTheme){ document.documentElement.setAttribute('data-theme', savedTheme==='paper'?'':savedTheme); modeBtn.textContent = 'Theme: ' + (savedTheme==='paper'?'Paper':savedTheme.charAt(0).toUpperCase()+savedTheme.slice(1)); }
+  // Unified Settings popover
+  document.addEventListener('DOMContentLoaded', () => {
+    const root = document.documentElement;
+    const btn = document.getElementById('settings-btn');
+    const pop = document.getElementById('settings');
+    const themeInputs = Array.from(pop.querySelectorAll('input[name="theme"]'));
+    const layoutInputs = Array.from(pop.querySelectorAll('input[name="layout"]'));
+    const range = document.getElementById('font-range');
+    const rangeVal = document.getElementById('font-value');
+    const lib = document.querySelector('main.library');
+    const defaultLayout = lib ? (lib.getAttribute('data-style') || 'notes') : 'notes';
 
-  const smaller = document.getElementById('smaller'); const bigger = document.getElementById('bigger');
-  const clamp = (n,min,max)=>Math.max(min,Math.min(max,n));
-  function setSize(delta){ const cur = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--base'))||18; const next = clamp(cur + delta, 16, 22); document.documentElement.style.setProperty('--base', next + 'px'); localStorage.setItem('book-font', next); }
-  smaller.addEventListener('click', ()=>setSize(-1)); bigger.addEventListener('click', ()=>setSize(1));
-  const savedSize = localStorage.getItem('book-font'); if(savedSize){ document.documentElement.style.setProperty('--base', savedSize+'px'); }
+    function open(){ pop.hidden = false; btn.setAttribute('aria-expanded','true'); position(); }
+    function close(){ pop.hidden = true; btn.setAttribute('aria-expanded','false'); }
+    function toggle(){ (pop.hidden ? open() : close()); }
+    function position(){
+      const r = btn.getBoundingClientRect();
+      pop.style.left = (r.left + window.scrollX) + 'px';
+      pop.style.top  = (r.bottom + window.scrollY + 8) + 'px';
+    }
+
+    // Apply theme
+    function setTheme(val){
+      const v = (val||'paper');
+      root.setAttribute('data-theme', v==='paper' ? '' : v);
+      localStorage.setItem('book-theme', v);
+      themeInputs.forEach(i=>{ i.checked = (i.value===v); });
+    }
+    setTheme(localStorage.getItem('book-theme') || 'paper');
+    themeInputs.forEach(i=> i.addEventListener('change', ()=> setTheme(i.value)));
+
+    // Apply font size
+    function setFont(px){ const n = Math.max(16, Math.min(22, parseInt(px||18,10))); root.style.setProperty('--base', n + 'px'); localStorage.setItem('book-font', n); if(range){ range.value = n; rangeVal.textContent = n + 'px'; } }
+    setFont(localStorage.getItem('book-font') || 18);
+    if(range){ range.addEventListener('input', ()=> setFont(range.value)); }
+
+    // Apply layout (only if library exists)
+    function setLayout(val){ if(!lib) return; const v = (val==='cover'?'cover':'notes'); lib.setAttribute('data-style', v); localStorage.setItem('home-style', v); layoutInputs.forEach(i=>{ i.checked = (i.value===v); }); }
+    if(lib){ setLayout(localStorage.getItem('home-style') || defaultLayout); }
+    layoutInputs.forEach(i=> i.addEventListener('change', ()=> setLayout(i.value)));
+    if(!lib){ document.getElementById('layout-section').style.display = 'none'; }
+
+    // Open/close interactions
+    btn.addEventListener('click', toggle);
+    window.addEventListener('resize', ()=>{ if(!pop.hidden) position(); });
+    document.addEventListener('click', (e)=>{ if(pop.hidden) return; if(e.target===btn || pop.contains(e.target)) return; close(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
+    document.getElementById('close-settings').addEventListener('click', close);
+    document.getElementById('reset-settings').addEventListener('click', ()=>{
+      localStorage.removeItem('book-theme');
+      localStorage.removeItem('book-font');
+      localStorage.removeItem('home-style');
+      setTheme('paper'); setFont(18); if(lib) setLayout(defaultLayout);
+    });
+
+    // Avatar fallback: show initials if image missing/failed
+    const av = document.querySelector('.profile .avatar');
+    if(av){
+      const img = av.querySelector('img');
+      const init = av.querySelector('.initials');
+      function updateAvatar(){
+        const ok = img && img.style.display !== 'none' && img.naturalWidth > 0;
+        if(init){ init.style.display = ok ? 'none' : 'flex'; }
+      }
+      if(img){
+        if(img.complete) updateAvatar();
+        img.addEventListener('load', updateAvatar);
+        img.addEventListener('error', updateAvatar);
+      }
+      updateAvatar();
+    }
+  });
 </script>

@@ -4,7 +4,7 @@ layout: default
 
 {% include topbar.html %}
 
-<main class="library" aria-label="Bookshelves">
+<main class="library" aria-label="Bookshelves" data-style="{{ site.home_style | default: 'notes' }}">
   {% assign cats = site.data.categories %}
   {% assign cols = 5 %}
   {% for c in cats %}
@@ -13,8 +13,19 @@ layout: default
     {% if open_row == 0 %}
       <section class="shelf-row">
         <div class="shelf-title">Shelf {{ i | divided_by: cols | plus: 1 }}</div>
-        <div class="notes">
+        <div class="tiles">
     {% endif %}
+
+    <!-- Cover style card (always rendered; visibility controlled via CSS/JS) -->
+    <a class="cover" href="{{ '/book/' | append: c.id | append: '/' | relative_url }}" data-id="{{ c.id }}">
+      <div class="cover__strap"></div>
+      <div class="cover__icon" aria-hidden="true"></div>
+      <div class="cover__title">{{ c.label }}</div>
+      {% if c.blurb %}<div class="cover__blurb">{{ c.blurb }}</div>{% endif %}
+      <div class="cover__meta">Diary • {{ site.time | date: '%Y' }}</div>
+    </a>
+
+    <!-- Sticky note style card (always rendered; visibility controlled via CSS/JS) -->
     {% assign color = i | modulo: 4 %}
     <a class="note {% if color == 1 %}note--mint{% elsif color == 2 %}note--sky{% elsif color == 3 %}note--rose{% endif %}" href="{{ '/book/' | append: c.id | append: '/' | relative_url }}" style="--tilt: {{ -0.6 | plus: i | modulo: 3 | times: 0.6 }}deg">
       <div class="pin" aria-hidden="true"></div>
@@ -38,7 +49,7 @@ layout: default
     {% assign close_row = i | modulo: cols %}
     {% assign last_col = cols | minus: 1 %}
     {% if close_row == last_col or forloop.last %}
-        </div>
+        </div> <!-- .tiles -->
       </section>
     {% endif %}
   {% endfor %}

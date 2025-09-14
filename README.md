@@ -31,3 +31,18 @@ Write your **Markdown** here. Images, code fences, lists — all work.
 ```
 
 The post will show up in the **Technology** book automatically.
+
+## Run Locally
+
+You can preview the site locally using the same setup as GitHub Pages.
+
+- Prereqs: Ruby 3.x and Bundler installed
+- Install dependencies:
+  - `bundle install`
+- Serve the site:
+  - `bundle exec jekyll serve`
+- Open in your browser:
+  - Because `_config.yml` has `baseurl: /books`, visit `http://localhost:4000/books/`
+  - Example post: `http://localhost:4000/books/technology/ai-trends-this-week/`
+
+Tip: To serve at the root for local testing, run `bundle exec jekyll serve --baseurl ""` and open `http://localhost:4000/`.

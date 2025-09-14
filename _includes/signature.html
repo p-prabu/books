@@ -1,0 +1,14 @@
+<hr style="margin:28px 0; border:0; height:1px; background:rgba(0,0,0,.08)">
+<div class="signature">
+  <div class="sig__avatar">
+    {% if site.author.avatar %}
+    <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name }}" onerror="this.style.display='none'">
+    {% endif %}
+  </div>
+  <div class="sig__text">
+    <div class="sig__name">{{ site.author.name }}</div>
+    {% if site.author.bio %}<div class="sig__bio">{{ site.author.bio }}</div>{% endif %}
+    <a class="sig__link" href="{{ '/about/' | relative_url }}">About →</a>
+  </div>
+  </div>
+

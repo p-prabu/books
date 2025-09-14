@@ -5,11 +5,47 @@ layout: default
 <article class="post-read">
   <header class="post-head">
     <h1>{{ page.title }}</h1>
-    <p class="meta">{{ page.date | date: "%B %d, %Y" }} — {{ page.categories | join: ", " }}</p>
+    <p class="meta">
+      {{ page.date | date: "%B %d, %Y" }}
+      • <span id="reading-time">…</span>
+      {% assign cat0 = page.categories | first | default: page.categories %}
+      {% if cat0 %}• <a href="{{ '/book/' | append: cat0 | append: '/' | relative_url }}" class="chip">{{ cat0 | capitalize }}</a>{% endif %}
+    </p>
     {% if page.subtitle %}<p class="subtitle">{{ page.subtitle }}</p>{% endif %}
   </header>
-  <div class="post-body">
+  <div class="post-body" id="post-body">
     {{ content }}
   </div>
+  {% include signature.html %}
+
+  {% assign cat = page.categories | first | default: page.categories %}
+  {% if cat %}
+    {% assign rel = site.categories[cat] | default: [] %}
+    {% assign rel = rel | sort: 'date' | reverse %}
+    <div class="related">
+      <h3>Related in {{ cat | capitalize }}</h3>
+      <ul>
+      {% for p in rel %}
+        {% if p.url != page.url %}
+          <li><a href="{{ p.url | relative_url }}">{{ p.title }}</a> <span class="meta">— {{ p.date | date: "%b %d, %Y" }}</span></li>
+        {% endif %}
+        {% if forloop.index == 5 %}{% break %}{% endif %}
+      {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
   <p class="back"><a href="{{ '/' | relative_url }}">← Back to Shelf</a></p>
 </article>
+
+<script>
+  // Client-side reading time calculation (~200 wpm)
+  (function(){
+    const body = document.getElementById('post-body');
+    const out = document.getElementById('reading-time');
+    if(!body || !out) return;
+    const text = body.innerText || body.textContent || '';
+    const words = text.trim().split(/\s+/).filter(Boolean).length;
+    const mins = Math.max(1, Math.round(words / 200));
+    out.textContent = mins + ' min read';
+  })();
+</script>

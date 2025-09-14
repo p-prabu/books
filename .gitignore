@@ -1,0 +1,9 @@
+# Build output
+_site/
+
+# Bundler-installed gems (local install)
+vendor/
+
+# macOS cruft
+.DS_Store
+

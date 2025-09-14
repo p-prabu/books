@@ -17,3 +17,18 @@ exclude:
 sass:
   style: compressed
 timezone: Europe/Stockholm
+home_style: cover  # 'cover' for diary covers, 'notes' for sticky-notes
+# Optional branding text on covers (falls back to site.title if unset)
+# cover_brand: "Prabu Ponnan"
+
+# Author metadata
+author:
+  name: "Prabu Ponnan"
+  bio: "Sharing weekly notes, experiments, and reflections."
+  avatar: "/assets/avatar.jpg"  # optional; add an image at this path to show a photo
+  email: ""
+  socials:
+    twitter: ""
+    github: "p-prabu"
+    resume: "https://resume.prabuponnan.in/"
+    blog: "https://techblog.prabuponnan.in/"

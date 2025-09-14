@@ -1,20 +1,30 @@
 - id: technology
   label: Technology
+  blurb: Practical signals for builders — no hype.
 - id: personal-growth
   label: Personal Growth
+  blurb: Tiny habits, better systems, and mindful living.
 - id: health
   label: Health & Wellness
+  blurb: Simple movement, sleep, and nutrition that stick.
 - id: finance
   label: Finance & Investing
+  blurb: Calm money — long term, low noise.
 - id: career
   label: Career & Work
+  blurb: Craft, leadership, and navigating modern work.
 - id: books
   label: Books & Learning
+  blurb: Notes and highlights from what I’m reading.
 - id: travel
   label: Travel & Lifestyle
+  blurb: Light packing, slow travel, and local finds.
 - id: food
   label: Food & Recipes
+  blurb: Quick, tasty, and repeatable home cooking.
 - id: science
   label: Science & Innovation
+  blurb: Curiosity, experiments, and future energy.
 - id: reflections
   label: Weekly Reflections
+  blurb: A weekly snapshot of what mattered.
